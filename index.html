@@ -82,7 +82,11 @@
   .shortcut {
     display: inline-block;
     line-height: 0;
-    transition: transform 200ms ease;
+    padding: 0.7rem;
+    border: 1px solid #a5a5b0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(124,140,240,0.22);
+    transition: transform 200ms ease, box-shadow 200ms ease;
   }
   .shortcut svg {
     width: 34px;
@@ -90,7 +94,7 @@
     fill: var(--logo-avg);
     transition: fill 200ms ease;
   }
-  .shortcut:hover { transform: translateY(-2px); }
+  .shortcut:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(124,140,240,0.32); }
   .shortcut:hover svg { fill: var(--accent); }
   .shortcut:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   @media (max-width: 600px) {
