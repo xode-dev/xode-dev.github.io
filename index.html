@@ -117,10 +117,14 @@
     fill: var(--logo-avg);
     transition: fill 200ms ease;
   }
-  .shortcut:hover { border-color: var(--accent); }
+  .shortcut:hover,
+  .shortcut:focus-visible { border-color: var(--accent); }
   .shortcut:hover::before,
-  .shortcut:hover::after { opacity: 1; }
-  .shortcut:hover svg { fill: var(--accent); }
+  .shortcut:hover::after,
+  .shortcut:focus-visible::before,
+  .shortcut:focus-visible::after { opacity: 1; }
+  .shortcut:hover svg,
+  .shortcut:focus-visible svg { fill: var(--accent); }
   .shortcut:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   @media (max-width: 600px) {
     :root { --side-col: auto; }
@@ -154,11 +158,27 @@
   </main>
   <script>
     document.querySelectorAll('.shortcut').forEach(function (el) {
+      var pad = 24; // matches the ::before/::after inset so the glow center tracks the cursor
+      var raf = null, cx = null, cy = null, tx = 0, ty = 0;
+      function step() {
+        cx += (tx - cx) * 0.18;
+        cy += (ty - cy) * 0.18;
+        el.style.setProperty('--mx', cx.toFixed(1) + 'px');
+        el.style.setProperty('--my', cy.toFixed(1) + 'px');
+        raf = (Math.abs(tx - cx) > 0.5 || Math.abs(ty - cy) > 0.5) ? requestAnimationFrame(step) : null;
+      }
       el.addEventListener('mousemove', function (e) {
         var r = el.getBoundingClientRect();
-        var pad = 24; // matches the ::before/::after inset so the glow center tracks the cursor
-        el.style.setProperty('--mx', (e.clientX - r.left + pad) + 'px');
-        el.style.setProperty('--my', (e.clientY - r.top + pad) + 'px');
+        tx = e.clientX - r.left + pad;
+        ty = e.clientY - r.top + pad;
+        if (cx === null) { cx = tx; cy = ty; } // first entry: start at the cursor, no glide-in
+        if (!raf) raf = requestAnimationFrame(step);
+      });
+      el.addEventListener('mouseleave', function () {
+        var r = el.getBoundingClientRect(); // glide back to center while the glow fades out
+        tx = r.width / 2 + pad;
+        ty = r.height / 2 + pad;
+        if (!raf) raf = requestAnimationFrame(step);
       });
     });
   </script>
