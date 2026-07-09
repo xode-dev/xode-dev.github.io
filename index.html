@@ -68,7 +68,12 @@
   }
   h1 { grid-column: 2; grid-row: 2; }
   .bracket { color: var(--accent); }
-  .bracket .pipe { color: #4a4a52; margin-right: 0.4em; }
+  .bracket .pipe { color: #4a4a52; margin-right: 0.4em; animation: blink 2s step-end infinite; }
+  @keyframes blink {
+    0%, 45%   { opacity: 1; }
+    50%, 95%  { opacity: 0; }
+    100%      { opacity: 1; }
+  }
   .bracket-left  { grid-column: 1; grid-row: 2; justify-self: end; white-space: nowrap; }
   .bracket-right { grid-column: 3; grid-row: 2; justify-self: start; }
   .shortcuts {
@@ -104,6 +109,7 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .logo { animation: none; }
+    .bracket .pipe { animation: none; }
   }
 </style>
 </head>
