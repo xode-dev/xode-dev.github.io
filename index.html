@@ -88,7 +88,7 @@
     border: 1px solid #6b6b75;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(124,140,240,0.22);
-    transition: transform 200ms ease, box-shadow 200ms ease;
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
   }
   .shortcut svg {
     width: 34px;
@@ -96,12 +96,12 @@
     fill: var(--logo-avg);
     transition: fill 200ms ease;
   }
-  .shortcut:hover { transform: translateY(-2px); animation: shortcut-glow 14s ease-in-out infinite; }
-  .shortcut:hover svg { fill: var(--accent); }
-  @keyframes shortcut-glow {
-    0%, 100% { box-shadow: 0 4px 18px rgba(150,150,162,0.5);  border-color: #6b6b75; }
-    50%      { box-shadow: 0 4px 20px rgba(138,110,240,0.6);  border-color: var(--accent); }
+  .shortcut:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 4px 22px rgba(138,110,240,0.6), 0 0 12px rgba(124,140,240,0.4);
   }
+  .shortcut:hover svg { fill: var(--accent); }
   .shortcut:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   @media (max-width: 600px) {
     :root { --side-col: auto; }
