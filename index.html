@@ -82,49 +82,24 @@
     margin-top: 3.5rem;
   }
   .shortcut {
-    position: relative;
-    isolation: isolate;
     display: inline-block;
     line-height: 0;
     padding: 0.7rem;
     border: 1px solid #6b6b75;
     border-radius: 12px;
-    transition: border-color 200ms ease;
-  }
-  .shortcut::before,
-  .shortcut::after {
-    content: "";
-    position: absolute;
-    inset: -24px;
-    border-radius: 28px;
-    opacity: 0;
-    pointer-events: none;
-    z-index: -1;
-    filter: blur(6px);
-    transition: opacity 200ms ease;
-  }
-  .shortcut::before {
-    background: radial-gradient(circle at 50% 50%, rgba(150,150,162,0.5), transparent 60%);
-  }
-  .shortcut::after {
-    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(138,110,240,0.6), transparent 55%);
+    transition: box-shadow 200ms ease, border-color 200ms ease;
   }
   .shortcut svg {
-    position: relative;
-    z-index: 1;
     width: 34px;
     height: 34px;
     fill: var(--logo-avg);
     transition: fill 200ms ease;
   }
-  .shortcut:hover,
-  .shortcut:focus-visible { border-color: var(--accent); }
-  .shortcut:hover::before,
-  .shortcut:hover::after,
-  .shortcut:focus-visible::before,
-  .shortcut:focus-visible::after { opacity: 1; }
-  .shortcut:hover svg,
-  .shortcut:focus-visible svg { fill: var(--accent); }
+  .shortcut:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 22px rgba(138,110,240,0.3), 0 0 12px rgba(124,140,240,0.2);
+  }
+  .shortcut:hover svg { fill: var(--accent); }
   .shortcut:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   @media (max-width: 600px) {
     :root { --side-col: auto; }
@@ -156,31 +131,5 @@
       </a>
     </nav>
   </main>
-  <script>
-    document.querySelectorAll('.shortcut').forEach(function (el) {
-      var pad = 24; // matches the ::before/::after inset so the glow center tracks the cursor
-      var raf = null, cx = null, cy = null, tx = 0, ty = 0;
-      function step() {
-        cx += (tx - cx) * 0.18;
-        cy += (ty - cy) * 0.18;
-        el.style.setProperty('--mx', cx.toFixed(1) + 'px');
-        el.style.setProperty('--my', cy.toFixed(1) + 'px');
-        raf = (Math.abs(tx - cx) > 0.5 || Math.abs(ty - cy) > 0.5) ? requestAnimationFrame(step) : null;
-      }
-      el.addEventListener('mousemove', function (e) {
-        var r = el.getBoundingClientRect();
-        tx = e.clientX - r.left + pad;
-        ty = e.clientY - r.top + pad;
-        if (cx === null) { cx = tx; cy = ty; } // first entry: start at the cursor, no glide-in
-        if (!raf) raf = requestAnimationFrame(step);
-      });
-      el.addEventListener('mouseleave', function () {
-        var r = el.getBoundingClientRect(); // glide back to center while the glow fades out
-        tx = r.width / 2 + pad;
-        ty = r.height / 2 + pad;
-        if (!raf) raf = requestAnimationFrame(step);
-      });
-    });
-  </script>
 </body>
 </html>
